@@ -1,0 +1,98 @@
+// Karkain-Scientific - scientific computation abstractions.
+// Karkain Language v1.2.0 verified baseline (tag v1.2.0,
+// commit 77d70693e1e3134dac312a303bffafa7d50fa988).
+//
+// Scope boundary: this framework implements integer arithmetic routines
+// only. No floating-point tensor, GPU or arbitrary-precision surface is
+// claimed. Division is checked by the language runtime.
+//
+// Vectors are plain numeric arrays.
+
+// new_vector creates a vector from values.
+public func new_vector(values) {
+    return values
+}
+
+// vector_add returns the element-wise sum of two equal-length vectors.
+public func vector_add(a, b) {
+    let out = []
+    let n = len(a)
+    if len(b) < n {
+        return out
+    }
+    let i = 0
+    while (i < n) {
+        out = push(out, a[i] + b[i])
+        i = i + 1
+    }
+    return out
+}
+
+// dot_product returns the sum of pairwise products.
+public func dot_product(a, b) {
+    let sum = 0
+    let n = len(a)
+    if len(b) < n {
+        return 0
+    }
+    let i = 0
+    while (i < n) {
+        sum = sum + a[i] * b[i]
+        i = i + 1
+    }
+    return sum
+}
+
+// sum_values returns the sum of a vector.
+public func sum_values(values) {
+    let sum = 0
+    let i = 0
+    while (i < len(values)) {
+        sum = sum + values[i]
+        i = i + 1
+    }
+    return sum
+}
+
+// mean returns the integer average of a non-empty vector, or 0.
+public func mean(values) {
+    if len(values) == 0 {
+        return 0
+    }
+    return sum_values(values) / len(values)
+}
+
+// variance returns the integer mean of squared deviations.
+public func variance(values) {
+    if len(values) == 0 {
+        return 0
+    }
+    let m = mean(values)
+    let sum = 0
+    let i = 0
+    while (i < len(values)) {
+        let d = values[i] - m
+        sum = sum + d * d
+        i = i + 1
+    }
+    return sum / len(values)
+}
+
+// sqrt_newton approximates integer square root with fixed iterations.
+public func sqrt_newton(n, iterations) {
+    if n <= 0 {
+        return 0
+    }
+    let x = n
+    let i = 0
+    while (i < iterations) {
+        x = (x + n / x) / 2
+        i = i + 1
+    }
+    return x
+}
+
+// describe_vector builds a one-line vector diagnostic.
+public func describe_vector(values) {
+    return "vector:len=" + str(len(values)) + " sum=" + str(sum_values(values))
+}

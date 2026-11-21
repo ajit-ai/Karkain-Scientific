@@ -1,0 +1,7 @@
+name = "karkain-scientific"
+version = "0.1.0-dev"
+description = "Scientific integer computation abstractions for Karkain"
+license = "MIT"
+targets = ["native"]
+
+[dependencies]

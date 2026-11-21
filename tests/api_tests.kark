@@ -1,0 +1,48 @@
+// Native tests for Karkain-Scientific.
+
+func test_new_vector() {
+    let v = new_vector([1, 2, 3])
+    assert_eq(len(v), 3)
+    assert_eq(v[0], 1)
+}
+
+func test_vector_add() {
+    let v = vector_add([1, 2, 3], [10, 20, 30])
+    assert_eq(len(v), 3)
+    assert_eq(v[0], 11)
+    assert_eq(v[2], 33)
+}
+
+func test_vector_add_short() {
+    assert_eq(len(vector_add([1, 2], [1])), 0)
+}
+
+func test_dot_product() {
+    assert_eq(dot_product([1, 2, 3], [4, 5, 6]), 32)
+    assert_eq(dot_product([1, 2], [1]), 0)
+}
+
+func test_sum_values() {
+    assert_eq(sum_values([1, 2, 3, 4]), 10)
+    assert_eq(sum_values([]), 0)
+}
+
+func test_mean() {
+    assert_eq(mean([2, 4, 6]), 4)
+    assert_eq(mean([]), 0)
+}
+
+func test_variance() {
+    assert_eq(variance([2, 4, 6]), 2)
+    assert_eq(variance([]), 0)
+}
+
+func test_sqrt_newton() {
+    assert_eq(sqrt_newton(16, 6), 4)
+    assert_eq(sqrt_newton(9, 6), 3)
+    assert_eq(sqrt_newton(0, 6), 0)
+}
+
+func test_describe_vector() {
+    assert_eq(describe_vector([1, 2, 3]), "vector:len=3 sum=6")
+}

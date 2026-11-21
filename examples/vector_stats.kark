@@ -1,0 +1,13 @@
+// Karkain-Scientific runnable example: vector arithmetic and statistics.
+import scientific
+
+func main() {
+    let xs = new_vector([2, 4, 6, 8])
+    let ys = new_vector([1, 1, 1, 1])
+    println(describe_vector(xs))
+    println("sum=" + str(sum_values(xs)))
+    println("mean=" + str(mean(xs)))
+    println("variance=" + str(variance(xs)))
+    println("dot=" + str(dot_product(xs, ys)))
+    println("sqrt64=" + str(sqrt_newton(64, 8)))
+}

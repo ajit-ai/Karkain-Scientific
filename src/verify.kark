@@ -1,0 +1,11 @@
+// Integration verification for the Karkain-Scientific public API.
+import scientific
+
+func main() {
+    let a = new_vector([1, 2, 3])
+    let b = new_vector([4, 5, 6])
+    assert_eq(dot_product(a, b), 32)
+    assert_eq(mean(a), 2)
+    assert_eq(sqrt_newton(81, 8), 9)
+    println(describe_vector(a))
+}
