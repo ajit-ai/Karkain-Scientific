@@ -46,3 +46,72 @@ func test_sqrt_newton() {
 func test_describe_vector() {
     assert_eq(describe_vector([1, 2, 3]), "vector:len=3 sum=6")
 }
+
+// --- Phase 2 regression ---
+
+func test_phase1_regression() {
+    assert_eq(vector_add([1, 2], [3, 4])[1], 6)
+    assert_eq(dot_product([1, 2], [3, 4]), 11)
+    assert_eq(mean([2, 4, 6]), 4)
+    assert_eq(variance([2, 4, 6]), 2)
+    assert_eq(sqrt_newton(16, 6), 4)
+}
+
+// --- Phase 2 additions ---
+
+func test_vector_validation() {
+    assert(valid_vector([1]))
+    assert(valid_vector([]) == false)
+}
+
+func test_experiment_lifecycle() {
+    let e = set_experiment_state(new_experiment("e1", " Trial"), "running")
+    assert_eq(experiment_state(e), "running")
+    assert_eq(experiment_state(new_experiment("e1", "Trial")), "created")
+}
+
+func test_observations() {
+    let o = add_observation(add_observation(new_observations(), "temp", 21.5), "mass", 2.5)
+    assert_eq(observation_count(o), 2)
+    assert_eq(observation_value(o, "temp"), 21.5)
+    assert_eq(observation_value(o, "none"), 0.0)
+}
+
+func test_unit_conversion() {
+    assert_eq(conversion_factor("cm", "m"), 0.01)
+    assert_eq(conversion_factor("kg", "g"), 1000.0)
+    assert_eq(conversion_factor("x", "y"), 1.0)
+    assert_eq(convert(100.0, "cm", "m"), 1.0)
+    assert_eq(convert(2.0, "kg", "g"), 2000.0)
+}
+
+func test_float_statistics() {
+    assert_eq(mean_float([1.0, 2.0, 3.0]), 2.0)
+    assert_eq(mean_float([]), 0.0)
+    let v = variance_float([1.0, 2.0, 3.0])
+    assert(v > 0.6)
+    assert(v < 0.7)
+    assert_eq(variance_float([]), 0.0)
+}
+
+func test_integration_and_root() {
+    assert_eq(integrate_trapezoid([1.0, 1.0, 1.0], 1.0), 2.0)
+    assert_eq(integrate_trapezoid([1.0], 1.0), 0.0)
+    assert_eq(bisect_midpoint(0.0, 2.0), 1.0)
+}
+
+func test_results_and_pipeline() {
+    let r = new_result(3.5, 0.1)
+    assert_eq(result_value(r), 3.5)
+    assert_eq(result_uncertainty(r), 0.1)
+    let p = sci_add_step(sci_add_step(new_sci_pipeline("p"), "load"), "analyze")
+    assert_eq(sci_step_count(p), 2)
+    assert_eq(compare_results(5.0, 3.0), 2.0)
+    assert_eq(compare_results(3.0, 5.0), 2.0)
+    assert_eq(aggregate_results([r, r]), 7.0)
+}
+
+func test_precision_and_contract() {
+    assert_eq(precision_digits(precision_metadata(6)), 6)
+    assert_eq(quantum_contract(), "quantum.measure(circuit,shots)")
+}

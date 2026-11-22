@@ -96,3 +96,179 @@ public func sqrt_newton(n, iterations) {
 public func describe_vector(values) {
     return "vector:len=" + str(len(values)) + " sum=" + str(sum_values(values))
 }
+
+// ---------------------------------------------------------------------------
+// Phase 2 additions. Phase 1 integer routines are unchanged.
+// Probe evidence: float +,-,*,/ execute correctly; sqrt/abs/pow parse and
+// execute but return 0 for all inputs (stubs); complex literals are rejected.
+// Therefore no sqrt-based or matrix/tensor computation is claimed.
+
+// valid_vector rejects empty datasets.
+public func valid_vector(values) { return len(values) > 0 }
+
+// new_experiment creates an experiment model.
+public func new_experiment(id, name) {
+    let e = []
+    e = push(e, id)
+    e = push(e, name)
+    e = push(e, "created")
+    return e
+}
+
+// experiment_state returns an experiment state.
+public func experiment_state(experiment) { return experiment[2] }
+
+// set_experiment_state records an experiment state.
+public func set_experiment_state(experiment, state) {
+    let out = []
+    out = push(out, experiment[0])
+    out = push(out, experiment[1])
+    out = push(out, state)
+    return out
+}
+
+// new_observations creates an observation store.
+public func new_observations() {
+    return []
+}
+
+// add_observation records a named numeric observation.
+public func add_observation(observations, key, value) {
+    let out = observations
+    out = push(out, key)
+    out = push(out, value)
+    return out
+}
+
+// observation_value returns an observation or 0.0.
+public func observation_value(observations, key) {
+    let i = 0
+    while (i < len(observations)) {
+        if observations[i] == key { return observations[i + 1] }
+        i = i + 2
+    }
+    return 0.0
+}
+
+// observation_count returns the number of observations.
+public func observation_count(observations) { return len(observations) / 2 }
+
+// conversion_factor returns a documented unit factor.
+public func conversion_factor(from, to) {
+    if from == "cm" {
+        if to == "m" { return 0.01 }
+    }
+    if from == "m" {
+        if to == "cm" { return 100.0 }
+    }
+    if from == "g" {
+        if to == "kg" { return 0.001 }
+    }
+    if from == "kg" {
+        if to == "g" { return 1000.0 }
+    }
+    return 1.0
+}
+
+// convert applies a documented unit conversion.
+public func convert(value, from, to) {
+    return value * conversion_factor(from, to)
+}
+
+// mean_float computes an arithmetic mean with float division.
+public func mean_float(values) {
+    if len(values) == 0 { return 0.0 }
+    let total = 0.0
+    let i = 0
+    while (i < len(values)) {
+        total = total + values[i]
+        i = i + 1
+    }
+    return total / len(values)
+}
+
+// variance_float computes variance with float division.
+public func variance_float(values) {
+    if len(values) == 0 { return 0.0 }
+    let m = mean_float(values)
+    let total = 0.0
+    let i = 0
+    while (i < len(values)) {
+        let d = values[i] - m
+        total = total + d * d
+        i = i + 1
+    }
+    return total / len(values)
+}
+
+// integrate_trapezoid approximates an integral from sampled values.
+public func integrate_trapezoid(values, step) {
+    if len(values) < 2 { return 0.0 }
+    let total = 0.0
+    let i = 0
+    while (i < len(values) - 1) {
+        total = total + (values[i] + values[i + 1]) * 0.5 * step
+        i = i + 1
+    }
+    return total
+}
+
+// bisect_midpoint returns the midpoint of a bracket.
+public func bisect_midpoint(low, high) { return (low + high) / 2.0 }
+
+// new_result creates a result with uncertainty metadata.
+public func new_result(value, uncertainty) {
+    let r = []
+    r = push(r, value)
+    r = push(r, uncertainty)
+    return r
+}
+
+// result_value returns a result value.
+public func result_value(result) { return result[0] }
+
+// result_uncertainty returns uncertainty metadata.
+public func result_uncertainty(result) { return result[1] }
+
+// new_sci_pipeline creates a scientific pipeline model.
+public func new_sci_pipeline(name) {
+    let p = []
+    p = push(p, name)
+    return p
+}
+
+// sci_add_step appends a pipeline step.
+public func sci_add_step(pipeline, step) { return push(pipeline, step) }
+
+// sci_step_count returns the number of steps.
+public func sci_step_count(pipeline) { return len(pipeline) - 1 }
+
+// compare_results returns the absolute-style difference of two values.
+public func compare_results(a, b) {
+    if a > b { return a - b }
+    return b - a
+}
+
+// aggregate_results sums result values.
+public func aggregate_results(results) {
+    let total = 0.0
+    let i = 0
+    while (i < len(results)) {
+        total = total + result_value(results[i])
+        i = i + 1
+    }
+    return total
+}
+
+// precision_metadata records precision metadata.
+public func precision_metadata(digits) {
+    let p = []
+    p = push(p, digits)
+    return p
+}
+
+// precision_digits returns recorded precision digits.
+public func precision_digits(metadata) { return metadata[0] }
+
+// quantum_contract documents Quantum integration.
+public func quantum_contract() { return "quantum.measure(circuit,shots)" }

@@ -1,0 +1,11 @@
+// Karkain-Scientific Phase 2 example: float statistics and unit conversion.
+import scientific
+
+func main() {
+    let obs = add_observation(add_observation(new_observations(), "x", 1.0), "y", 3.0)
+    println("observations=" + str(observation_count(obs)))
+    println("mean=" + str(mean_float([1.0, 2.0, 3.0])))
+    println("variance=" + str(variance_float([1.0, 2.0, 3.0])))
+    println("integral=" + str(integrate_trapezoid([1.0, 1.0], 1.0)))
+    println("meters=" + str(convert(100.0, "cm", "m")))
+}
